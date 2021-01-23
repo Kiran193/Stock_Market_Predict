@@ -1,0 +1,5 @@
+Hello sir,
+      As per the discussion we expect the following module in python
+1) We have raw data in .csv format so we have to store the data in mysql and then perform the exploratory data analysis.(data cleaning)
+2)  Train the dataset with 80:20(train and test data)
+3) Apply the machine learning model to predict the future trends.

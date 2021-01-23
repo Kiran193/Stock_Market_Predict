@@ -1,0 +1,12 @@
+tensorflow==1.13.1
+pandas
+numpy
+matplotlib
+pandas_datareader
+
+
+matplotlib.pyplot
+datetime
+urllib.request, json
+os
+sklearn.preprocessing 
