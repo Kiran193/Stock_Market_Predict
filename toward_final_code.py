@@ -17,7 +17,7 @@ from matplotlib import pyplot as plt
 
 my_path = os.path.abspath(os.getcwd())
 # print("...."+ my_path)
-# filepath = os.path.join(my_path,"CSV_Files\\")
+filepath = os.path.join(my_path,"CSV_Files\\")
 
 # print("file_name..." + file_name)
 # csv_file = filepath + "A.csv"
@@ -28,8 +28,8 @@ engine = create_engine('mysql://root:root@localhost/db_stock_market') # enter yo
 def read_csv_file(file_name):
 
     # print("file_name..." + file_name)
-    # csv_file = filepath + file_name
-    csv_file = file_name
+    csv_file = filepath + file_name
+    # csv_file = file_name
 
     stock = csv_file.split(".",1)
     stock_name = stock[0]
