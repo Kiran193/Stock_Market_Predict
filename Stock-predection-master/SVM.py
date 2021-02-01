@@ -1,3 +1,5 @@
+### https://github.com/kartik-joshi/Stock-predection
+
 from csv import reader
 from sklearn import svm
 import numpy as np

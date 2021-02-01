@@ -9,77 +9,31 @@ import datetime
 
 dataset = pd.read_csv('A.csv',index_col="Date",parse_dates=True)
 
-
-
-
-
 dataset.head()
 last_row = 25
 dataset_test = dataset.tail(last_row)
 dataset.drop(dataset.tail(last_row).index,inplace=True) # drop last n rows
 
-
-
-
-
 dataset.isna().any()
-
-
-
-
-
 dataset.info()
-
-
-
-
-
 dataset['Open'].plot(figsize=(16,6))
-
-
-
-
 
 # convert column "a" of a DataFrame
 # dataset["Close"] = dataset["Close"].str.replace(',', '').astype(float)
 
-
-
-
-
 # dataset["Volume"] = dataset["Volume"].str.replace(',', '').astype(float)
-
-
-
-
 
 # 7 day rolling mean
 dataset.rolling(7).mean().head(20)
 
-
-
-
-
 dataset['Open'].plot(figsize=(16,6))
 dataset.rolling(window=30).mean()['Close'].plot()
-
-
-
-
 
 dataset['Close: 30 Day Mean'] = dataset['Close'].rolling(window=30).mean()
 dataset[['Close','Close: 30 Day Mean']].plot(figsize=(16,6))
 
-
-
-
-
 # Optional specify a minimum number of periods
 dataset['Close'].expanding(min_periods=1).mean().plot(figsize=(16,6))
-
-
-
-
 
 training_set=dataset['Open']
 training_set=pd.DataFrame(training_set)

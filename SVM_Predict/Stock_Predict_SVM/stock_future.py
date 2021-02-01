@@ -56,7 +56,7 @@ try:
 	urllib.urlretrieve(dataset_url,output_path)
 except urllib.ContentTooShortError as p:
 	outfile=open(output_path,"w")
-	outfile.write(p.content)
+	# outfile.write(p.content)
 	outfile.close()
 	
 
