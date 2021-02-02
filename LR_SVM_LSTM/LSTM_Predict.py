@@ -17,21 +17,17 @@ class LSTM_process:
 
     def LSTM_(self, file):
 
-            
-
         dataset = pd.read_csv(file,index_col="Date",parse_dates=True)
-
-
 
         dataset.head()
         index = dataset.index
         number_of_rows = len(index) 
-        print(number_of_rows)
+        # print(number_of_rows)
 
         last_row = int(number_of_rows * 0.2)
 
-        print("last_row : "+ str(last_row) )
-        print( type(last_row))
+        # print("last_row : "+ str(last_row) )
+        # print( type(last_row))
 
         dataset_test = dataset.tail(last_row)
         dataset.drop(dataset.tail(last_row).index,inplace=True) # drop last n rows
@@ -60,18 +56,10 @@ class LSTM_process:
         training_set=dataset['Open']
         training_set=pd.DataFrame(training_set)
 
-
-
-
-
         # Feature Scaling
         from sklearn.preprocessing import MinMaxScaler
         sc = MinMaxScaler(feature_range = (0, 1))
         training_set_scaled = sc.fit_transform(training_set)
-
-
-
-
 
         # Creating a data structure with 60 timesteps and 1 output
         X_train = []
@@ -84,10 +72,6 @@ class LSTM_process:
         # Reshaping
         X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
 
-
-
-
-
         # Part 2 - Building the RNN
 
         # Importing the Keras libraries and packages
@@ -96,18 +80,8 @@ class LSTM_process:
         from keras.layers import LSTM
         from keras.layers import Dropout
 
-
-
-
-
-
         # Initialising the RNN
         regressor = Sequential()
-
-
-
-
-
 
         # Adding the first LSTM layer and some Dropout regularisation
         regressor.add(LSTM(units = 50, return_sequences = True, input_shape = (X_train.shape[1], 1)))
@@ -128,69 +102,35 @@ class LSTM_process:
         # Adding the output layer
         regressor.add(Dense(units = 1))
 
-
-
-
-
-
         # Compiling the RNN
         regressor.compile(optimizer = 'adam', loss = 'mean_squared_error',  metrics=['accuracy'])
 
         # Fitting the RNN to the Training set
         history = regressor.fit(X_train, y_train, epochs = 100, batch_size = 32)
 
-        print(history.history['loss'])
-        print(history.history['accuracy'])
-
-
+        
+        # print("history.history['loss']")
+        # print(history.history['loss'])
+        # print("history.history['accuracy']")
+        # print(history.history['accuracy'])
 
         # Part 3 - Making the predictions and visualising the results
 
         # Getting the real stock price of 2017
         # dataset_test = pd.read_csv('A_Test.csv',index_col="Date",parse_dates=True)
 
-        dataset_test.head()
-
-
-
-
+        # dataset_test.head()
 
         real_stock_price = dataset_test.iloc[:, 1:2].values
 
-
-
-
-
-        dataset_test.head()
-
-
-
-
-
-        dataset_test.info()
-
-
-
-
-
+        # dataset_test.head()
+        # dataset_test.info()
         # dataset_test["Volume"] = dataset_test["Volume"].str.replace(',', '').astype(float)
-
-
-
-
 
         test_set=dataset_test['Open']
         test_set=pd.DataFrame(test_set)
 
-
-
-
-
         test_set.info()
-
-
-
-
 
         # Getting the predicted stock price of 2017
         dataset_total = pd.concat((dataset['Open'], dataset_test['Open']), axis = 0)
@@ -205,17 +145,8 @@ class LSTM_process:
         predicted_stock_price = regressor.predict(X_test)
         predicted_stock_price = sc.inverse_transform(predicted_stock_price)
 
-
-
-
-
         predicted_stock_price=pd.DataFrame(predicted_stock_price)
         predicted_stock_price.info()
-
-
-
-
-
 
         # Visualising the results
         plt.plot(real_stock_price, color = 'red', label = 'Real Stock Price')

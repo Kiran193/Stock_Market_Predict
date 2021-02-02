@@ -32,19 +32,19 @@ def LR_SVM(csv_file):
     df = pd.read_csv(csv_file)
 
     # Take a look at the data
-    print(df.head())
+    # print(df.head())
 
     # Get the Adjusted Close Price 
     df = df[['Adj Close']] 
     # Take a look at the new data 
-    print(df.head())
+    # print(df.head())
 
     # A variable for predicting 'n' days out into the future
     forecast_out = 7 #'n=7' days
     #Create another column (the target ) shifted 'n' units up
     df['Prediction'] = df[['Adj Close']].shift(-forecast_out)
     #print the new data set
-    print(df.tail())
+    # print(df.tail())
 
 
     ### Create the independent data set (X)  #######
@@ -53,7 +53,7 @@ def LR_SVM(csv_file):
 
     #Remove the last '7' rows
     X = X[:-forecast_out]
-    print(X)
+    # print(X)
 
 
 
@@ -62,7 +62,7 @@ def LR_SVM(csv_file):
     y = np.array(df['Prediction'])
     # Get all of the y values except the last '7' rows
     y = y[:-forecast_out]
-    print(y)
+    # print(y)
 
 
 
@@ -92,11 +92,14 @@ def LR_SVM(csv_file):
     lr_confidence = lr.score(x_test, y_test)
     print("lr confidence: ", lr_confidence)
 
+
     ################  Forecast ################
 
 
     # Set x_forecast equal to the last 7 rows of the original data set from Adj Close column
     x_forecast = np.array(df.drop(['Prediction'],1))[-forecast_out:]
+    print("x_forecast.....")
+
     print(x_forecast)
 
     ################  Predict ################
@@ -104,15 +107,9 @@ def LR_SVM(csv_file):
 
     # Print linear regression model predictions for the next '7' days
     lr_prediction = lr.predict(x_forecast)
+    print("LR_Prediction.....")
     print(lr_prediction)
 
-    # plt.plot(real_stock_price, color = 'red', label = 'Real Stock Price')
-    # plt.plot(predicted_stock_price, color = 'blue', label = 'Predicted Stock Price')
-    plt.title('Stock Price Prediction')
-    plt.xlabel('Time')
-    plt.ylabel('Stock Price')
-    plt.legend()
-    plt.show()
 
 
     # Print support vector regressor model predictions for the next '7' days
@@ -120,37 +117,15 @@ def LR_SVM(csv_file):
     print(svm_prediction)
 
 
+    plt.plot(lr_prediction, color = 'blue', label = 'LR Predicted Stock Price')
+    plt.plot(svm_prediction, color = 'red', label = 'SVM Predicted Stock Price')
 
-def read_csv_file(csv_file):
+    plt.title('Stock Price Prediction')
+    plt.xlabel('Time in Days')
+    plt.ylabel('Stock Price')
+    plt.legend()
+    plt.show()
 
-    # print("file_name..." + file_name)
-    csv_file = filepath + file_name
-    # csv_file = file_name
-
-    stock = csv_file.split(".",1)
-    stock_name = stock[0]
-    # print("Stock Name..." + stock_name)
-
-    # print("CSV Path..." + csv_file)
-
-    csv_DF = pd.DataFrame()
-
-    if os.path.isfile(csv_file):
-        csv_DF = pd.read_csv(csv_file)
-
-        csv_DF["Date"] = pd.to_datetime(csv_DF["Date"])
-        csv_DF["Date"] = csv_DF["Date"].dt.strftime("%Y-%m-%d")
-
-        csv_DF = csv_DF.sort_values('Date')
-        print(csv_DF.isnull().sum()) #no missing values
-        csv_DF.describe()
-        csv_DF.drop_duplicates()
-
-        # print(csv_DF.head())
-        return csv_DF, stock_name
-    else:
-        print ("Can't fetch the file: ",file_name)
-        return csv_DF, stock_name
 
 def store_table(csv_file):
 
@@ -179,22 +154,24 @@ def main():
 
     print("Process A.csv")
     store_table(A)
-    LR_SVM(A)
-
-    # print("############## LSTM ##############")
-    # LSTM_Predict.LSTM_process().LSTM_(A)
+    # LR_SVM(A)
+    LSTM_Predict.LSTM_process().LSTM_(A)
 
     # print("Process ABB.csv")
     # store_table(ABB)
     # LR_SVM(ABB)
+    # LSTM_Predict.LSTM_process().LSTM_(ABB)
+
 
     # print("Process ABM.csv")
     # store_table(ABM)
     # LR_SVM(ABM)
+    # LSTM_Predict.LSTM_process().LSTM_(ABM)
 
     # print("Process ABUS.csv")
     # store_table(ABUS)
     # LR_SVM(ABUS)
+    # LSTM_Predict.LSTM_process().LSTM_(ABUS)
 
 
 
